@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Guardianes de Nutrición</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a7a4a;
+    --green-light: #e8f5ee;
+    --green-mid: #2d9e63;
+    --orange: #f4611e;
+    --orange-light: #fff0e8;
+    --cream: #faf8f4;
+    --dark: #1a1a18;
+    --gray: #6b7280;
+    --gray-light: #f3f4f6;
+    --white: #ffffff;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* SCREENS */
+  .screen {
+    display: none;
+    min-height: 100vh;
+    flex-direction: column;
+    animation: fadeIn 0.3s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* TOP BAR */
+  .topbar {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--white);
+    border-bottom: 1px solid #f0f0ec;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--green);
+    flex: 1;
+  }
+  .topbar .back-btn {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 8px 4px 0;
+    color: var(--dark);
+  }
+
+  /* SCROLL CONTENT */
+  .scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 100px;
+  }
+
+  /* BUTTONS */
+  .btn-primary {
+    display: block;
+    width: 100%;
+    background: var(--orange);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 18px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: -0.2px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(244,97,30,0.3);
+  }
+  .btn-primary:active { transform: scale(0.97); }
+
+  .btn-secondary {
+    display: block;
+    width: 100%;
+    background: var(--green-light);
+    color: var(--green);
+    border: none;
+    border-radius: 14px;
+    padding: 16px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.15s;
+  }
+  .btn-secondary:active { transform: scale(0.97); }
+
+  .btn-outline {
+    display: block;
+    width: 100%;
+    background: transparent;
+    color: var(--gray);
+    border: 1.5px solid #e0e0da;
+    border-radius: 14px;
+    padding: 14px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.15s;
+  }
+  .btn-outline:active { transform: scale(0.97); }
+
+  /* FIXED BOTTOM CTA */
+  .fixed-cta {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    padding: 16px 20px 28px;
+    background: linear-gradient(to top, var(--cream) 70%, transparent);
+    z-index: 20;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  /* ===== SCREEN 1: LANDING ===== */
+  #landing .hero {
+    background: linear-gradient(160deg, #0d5c36 0%, #1a7a4a 50%, #2d9e63 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  #landing .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 50%;
+  }
+  #landing .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -20px;
+    width: 160px; height: 160px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  #landing .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    backdrop-filter: blur(4px);
+  }
+  #landing .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+  }
+  #landing .hero h1 em {
+    font-style: italic;
+    color: #a8f0c6;
+  }
+  #landing .hero p {
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.88;
+    max-width: 300px;
+  }
+
+  .impact-ticker {
+    margin: 0 20px;
+    background: var(--orange);
+    color: white;
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    margin-top: -20px;
+    box-shadow: 0 6px 24px rgba(244,97,30,0.35);
+  }
+  .impact-ticker .icon { font-size: 28px; flex-shrink: 0; }
+  .impact-ticker .text { font-size: 14px; line-height: 1.4; }
+  .impact-ticker .text strong { font-size: 18px; font-weight: 700; display: block; }
+
+  .how-section {
+    padding: 32px 20px 16px;
+  }
+  .how-section h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--dark);
+  }
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .step-num {
+    width: 40px; height: 40px;
+    background: var(--green-light);
+    color: var(--green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .step-text { font-size: 15px; font-weight: 500; color: var(--dark); }
+  .step-sub { font-size: 13px; color: var(--gray); margin-top: 2px; }
+
+  .trust-section {
+    margin: 8px 20px 16px;
+    padding: 20px;
+    background: var(--green-light);
+    border-radius: 14px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  .trust-stat { text-align: center; flex: 1; }
+  .trust-stat .num {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--green);
+    display: block;
+  }
+  .trust-stat .label { font-size: 12px; color: var(--gray); margin-top: 2px; }
+  .trust-divider { width: 1px; background: #c5e4d3; height: 40px; }
+
+  /* ===== SCREEN 2: REGISTRO ===== */
+  #registro .reg-hero {
+    padding: 32px 24px 24px;
+  }
+  #registro .reg-hero h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  #registro .reg-hero p { font-size: 15px; color: var(--gray); }
+
+  .form-group {
+    padding: 0 20px;
+    margin-bottom: 14px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 16px 18px;
+    border: 1.5px solid #e5e5e0;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: var(--dark);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus { border-color: var(--green); }
+  .form-group input::placeholder { color: #bbb; }
+
+  .benefit-hint {
+    margin: 0 20px 20px;
+    padding: 14px 16px;
+    background: var(--orange-light);
+    border-radius: 12px;
+    font-size: 13px;
+    color: #b84c0e;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .benefit-hint .hint-icon { font-size: 18px; flex-shrink: 0; }
+
+  /* ===== SCREEN 3: AGENDAMIENTO ===== */
+  #agendamiento .schedule-hero {
+    padding: 24px 20px 16px;
+  }
+  #agendamiento .schedule-hero h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  #agendamiento .schedule-hero p { font-size: 14px; color: var(--gray); }
+
+  .jornadas-list { padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }
+
+  .jornada-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid transparent;
+    transition: border-color 0.2s, transform 0.15s;
+    cursor: pointer;
+  }
+  .jornada-card.selected {
+    border-color: var(--green);
+    background: linear-gradient(135deg, #fafffc 0%, #f0faf5 100%);
+  }
+  .jornada-card:active { transform: scale(0.985); }
+
+  .jornada-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .jornada-date {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green);
+  }
+  .jornada-spots {
+    background: var(--green-light);
+    color: var(--green);
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .jornada-spots.few { background: #fff3e0; color: #e65100; }
+  .jornada-time {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .jornada-location {
+    font-size: 14px;
+    color: var(--dark);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .jornada-impact {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--orange-light);
+    border-radius: 10px;
+    font-size: 13px;
+    color: #b84c0e;
+    font-weight: 500;
+  }
+  .jornada-select-btn {
+    margin-top: 14px;
+    width: 100%;
+    padding: 13px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .jornada-card.selected .jornada-select-btn {
+    background: var(--orange);
+  }
+
+  /* RESUMEN MODAL */
+  .resumen-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    align-items: flex-end;
+    max-width: 430px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .resumen-overlay.show { display: flex; }
+  .resumen-sheet {
+    background: var(--white);
+    border-radius: 24px 24px 0 0;
+    padding: 28px 24px 40px;
+    width: 100%;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .resumen-sheet h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .resumen-sheet .resumen-subtitle { font-size: 14px; color: var(--gray); margin-bottom: 20px; }
+  .resumen-detail {
+    background: var(--gray-light);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .resumen-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+  }
+  .resumen-row:last-child { border-bottom: none; }
+  .resumen-row .icon { font-size: 18px; }
+  .impact-highlight {
+    background: linear-gradient(135deg, #1a7a4a, #2d9e63);
+    color: white;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .impact-highlight .big { font-size: 22px; }
+  .impact-highlight .text strong { font-size: 18px; font-weight: 700; display: block; }
+  .impact-highlight .text span { font-size: 13px; opacity: 0.85; }
+  .sheet-handle {
+    width: 40px; height: 4px;
+    background: #ddd;
+    border-radius: 2px;
+    margin: 0 auto 24px;
+  }
+
+  /* ===== SCREEN 4: CONFIRMACIÓN ===== */
+  #confirmacion .confirm-top {
+    padding: 48px 24px 32px;
+    text-align: center;
+  }
+  .confirm-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #1a7a4a, #2d9e63);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 32px rgba(26,122,74,0.3);
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes popIn {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+  }
+  #confirmacion h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    color: var(--green);
+  }
+  #confirmacion p.subtitle { font-size: 15px; color: var(--gray); }
+
+  .confirm-card {
+    margin: 0 20px;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 16px;
+  }
+  .confirm-card h4 {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray);
+    margin-bottom: 14px;
+  }
+  .confirm-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 15px;
+    border-bottom: 1px solid #f5f5f0;
+  }
+  .confirm-row:last-child { border-bottom: none; }
+  .confirm-row .icon { font-size: 20px; }
+  .confirm-row strong { font-weight: 600; }
+
+  .impact-pill {
+    margin: 0 20px 16px;
+    background: var(--orange-light);
+    border-radius: 14px;
+    padding: 16px 20px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .impact-pill .big-icon { font-size: 28px; }
+  .impact-pill p { font-size: 14px; color: #b84c0e; line-height: 1.5; }
+  .impact-pill strong { font-size: 17px; font-weight: 700; display: block; }
+
+  /* ===== SCREEN 5: DASHBOARD ===== */
+  #dashboard .dash-hero {
+    background: linear-gradient(160deg, #0d5c36, #1a7a4a);
+    padding: 40px 24px 48px;
+    color: white;
+  }
+  #dashboard .dash-hero h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 14px;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  #dashboard .dash-hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  #dashboard .dash-hero .name { color: #a8f0c6; }
+
+  .dash-metrics {
+    margin: -28px 20px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .metric-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 18px 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .metric-card .metric-icon { font-size: 28px; margin-bottom: 8px; }
+  .metric-card .metric-val {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--green);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .metric-card .metric-label { font-size: 12px; color: var(--gray); line-height: 1.4; }
+
+  .benefit-card {
+    margin: 16px 20px 0;
+    background: linear-gradient(135deg, #f4611e, #f77c42);
+    border-radius: 16px;
+    padding: 20px;
+    color: white;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    box-shadow: 0 8px 24px rgba(244,97,30,0.3);
+  }
+  .benefit-card .b-icon { font-size: 36px; flex-shrink: 0; }
+  .benefit-card .b-label { font-size: 12px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.5px; }
+  .benefit-card .b-val {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 900;
+    margin: 4px 0;
+  }
+  .benefit-card .b-hint { font-size: 12px; opacity: 0.8; }
+
+  .activity-section {
+    padding: 24px 20px 0;
+  }
+  .activity-section h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+  .activity-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .activity-dot {
+    width: 10px; height: 10px;
+    background: var(--green);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .activity-text { font-size: 14px; flex: 1; }
+  .activity-time { font-size: 12px; color: var(--gray); }
+
+  .dash-cta-area { padding: 20px 20px 0; }
+</style>
+</head>
+<body>
+
+<!-- ======== SCREEN 1: LANDING ======== -->
+<div id="landing" class="screen active">
+  <div class="scroll-content">
+    <div class="hero">
+      <div class="hero-badge">🌱 Voluntariado con propósito</div>
+      <h1>Convierte tu tiempo en impacto <em>real</em> (y beneficios)</h1>
+      <p>Participa en jornadas de rescate de alimentos y recibe beneficios por tu aporte</p>
+    </div>
+
+    <div class="impact-ticker">
+      <div class="icon">🥗</div>
+      <div class="text">
+        <strong>4 horas = 120 personas</strong>
+        alimentadas con alimentos rescatados
+      </div>
+    </div>
+
+    <div class="how-section">
+      <h2>¿Cómo funciona?</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-text">Te registras</div>
+            <div class="step-sub">Solo toma 30 segundos</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-text">Participas en una jornada</div>
+            <div class="step-sub">Elige la que más te acomode</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-text">Recibes impacto + beneficios</div>
+            <div class="step-sub">Descuentos, certificados y más</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-section">
+      <div class="trust-stat">
+        <span class="num">1,240</span>
+        <div class="label">Voluntarios activos</div>
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-stat">
+        <span class="num">48t</span>
+        <div class="label">Alimentos rescatados</div>
+      </div>
+      <div class="trust-divider"></div>
+      <div class="trust-stat">
+        <span class="num">6,800</span>
+        <div class="label">Personas impactadas</div>
+      </div>
+    </div>
+
+    <div style="height: 100px;"></div>
+  </div>
+
+  <div class="fixed-cta">
+    <button class="btn-primary" onclick="go('registro')">Agendar mi primera jornada →</button>
+  </div>
+</div>
+
+<!-- ======== SCREEN 2: REGISTRO ======== -->
+<div id="registro" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('landing')">←</button>
+    <div class="logo">Guardianes</div>
+  </div>
+  <div class="scroll-content">
+    <div class="reg-hero">
+      <h2>Crea tu cuenta<br>y únete al cambio</h2>
+      <p>Solo necesitamos lo básico para comenzar</p>
+    </div>
+
+    <div class="form-group">
+      <label>Tu nombre</label>
+      <input type="text" id="nombre" placeholder="Ej: María González" value="">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="tu@email.com" value="">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="pass" placeholder="Mínimo 6 caracteres" value="">
+    </div>
+
+    <div class="benefit-hint">
+      <span class="hint-icon">🎁</span>
+      <span>Al registrarte recibes acceso a <strong>beneficios exclusivos</strong> por cada jornada que completes</span>
+    </div>
+
+    <div style="height: 100px;"></div>
+  </div>
+
+  <div class="fixed-cta">
+    <button class="btn-primary" onclick="registrar()">Continuar →</button>
+  </div>
+</div>
+
+<!-- ======== SCREEN 3: AGENDAMIENTO ======== -->
+<div id="agendamiento" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('registro')">←</button>
+    <div class="logo">Guardianes</div>
+  </div>
+  <div class="scroll-content">
+    <div class="schedule-hero">
+      <h2>Elige tu jornada 📅</h2>
+      <p>Selecciona la que mejor se adapta a tu tiempo</p>
+    </div>
+
+    <div class="jornadas-list">
+
+      <!-- Jornada 1 -->
+      <div class="jornada-card" id="j1" onclick="selectJornada(1)">
+        <div class="jornada-header">
+          <div class="jornada-date">Sábado 29 Mar</div>
+          <div class="jornada-spots">12 cupos</div>
+        </div>
+        <div class="jornada-time">⏰ 8:00 – 12:00 (4 horas)</div>
+        <div class="jornada-location">📍 Mercado Central, Bogotá</div>
+        <div class="jornada-impact">🥦 Esta jornada puede impactar a <strong>120 personas</strong></div>
+        <button class="jornada-select-btn">Seleccionar</button>
+      </div>
+
+      <!-- Jornada 2 -->
+      <div class="jornada-card" id="j2" onclick="selectJornada(2)">
+        <div class="jornada-header">
+          <div class="jornada-date">Domingo 30 Mar</div>
+          <div class="jornada-spots few">3 cupos</div>
+        </div>
+        <div class="jornada-time">⏰ 9:00 – 13:00 (4 horas)</div>
+        <div class="jornada-location">📍 Plaza de Paloquemao, Bogotá</div>
+        <div class="jornada-impact">🥦 Esta jornada puede impactar a <strong>95 personas</strong></div>
+        <button class="jornada-select-btn">Seleccionar</button>
+      </div>
+
+      <!-- Jornada 3 -->
+      <div class="jornada-card" id="j3" onclick="selectJornada(3)">
+        <div class="jornada-header">
+          <div class="jornada-date">Sábado 5 Abr</div>
+          <div class="jornada-spots">8 cupos</div>
+        </div>
+        <div class="jornada-time">⏰ 7:30 – 11:30 (4 horas)</div>
+        <div class="jornada-location">📍 Corabastos, Bogotá</div>
+        <div class="jornada-impact">🥦 Esta jornada puede impactar a <strong>150 personas</strong></div>
+        <button class="jornada-select-btn">Seleccionar</button>
+      </div>
+
+    </div>
+    <div style="height: 40px;"></div>
+  </div>
+</div>
+
+<!-- RESUMEN SHEET (modal bottom) -->
+<div class="resumen-overlay" id="resumenOverlay">
+  <div class="resumen-sheet">
+    <div class="sheet-handle"></div>
+    <h3>Resumen de tu jornada</h3>
+    <p class="resumen-subtitle">Confirma los detalles antes de agendar</p>
+
+    <div class="impact-highlight">
+      <div class="big">🌟</div>
+      <div class="text">
+        <strong id="resumen-impacto">Impacto a 120 personas</strong>
+        <span>Con 4 horas de tu tiempo</span>
+      </div>
+    </div>
+
+    <div class="resumen-detail">
+      <div class="resumen-row">
+        <span class="icon">📅</span>
+        <span id="resumen-fecha">Sábado 29 Mar</span>
+      </div>
+      <div class="resumen-row">
+        <span class="icon">⏰</span>
+        <span id="resumen-hora">8:00 – 12:00 (4 horas)</span>
+      </div>
+      <div class="resumen-row">
+        <span class="icon">📍</span>
+        <span id="resumen-lugar">Mercado Central, Bogotá</span>
+      </div>
+      <div class="resumen-row">
+        <span class="icon">🎁</span>
+        <span>Ganarás <strong>10 puntos de impacto</strong></span>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="confirmar()" style="margin-bottom:10px">Confirmar asistencia ✓</button>
+    <button class="btn-outline" onclick="cerrarResumen()">Elegir otra jornada</button>
+  </div>
+</div>
+
+<!-- ======== SCREEN 4: CONFIRMACIÓN ======== -->
+<div id="confirmacion" class="screen">
+  <div class="scroll-content">
+    <div class="confirm-top">
+      <div class="confirm-icon">✅</div>
+      <h2>¡Listo! Ya eres<br>parte del cambio</h2>
+      <p class="subtitle">Tu lugar está reservado. Te esperamos.</p>
+    </div>
+
+    <div class="confirm-card">
+      <h4>Detalles de tu jornada</h4>
+      <div class="confirm-row">
+        <span class="icon">📅</span>
+        <strong id="conf-fecha">Sábado 29 Mar</strong>
+      </div>
+      <div class="confirm-row">
+        <span class="icon">⏰</span>
+        <strong id="conf-hora">8:00 – 12:00</strong>
+      </div>
+      <div class="confirm-row">
+        <span class="icon">📍</span>
+        <strong id="conf-lugar">Mercado Central, Bogotá</strong>
+      </div>
+    </div>
+
+    <div class="impact-pill">
+      <div class="big-icon">🌱</div>
+      <div>
+        <strong id="conf-impacto">Impactarás a 120 personas</strong>
+        <p>Recibirás confirmación en tu correo electrónico</p>
+      </div>
+    </div>
+
+    <div style="height: 100px;"></div>
+  </div>
+
+  <div class="fixed-cta">
+    <button class="btn-primary" onclick="go('dashboard')" style="margin-bottom:10px">Ver mi impacto →</button>
+    <button class="btn-outline" onclick="go('landing')">Volver al inicio</button>
+  </div>
+</div>
+
+<!-- ======== SCREEN 5: DASHBOARD ======== -->
+<div id="dashboard" class="screen">
+  <div class="topbar">
+    <button class="back-btn" onclick="go('landing')">←</button>
+    <div class="logo">Mi Impacto</div>
+  </div>
+  <div class="scroll-content">
+    <div class="dash-hero">
+      <h2>Tu impacto</h2>
+      <h1>Gracias a tu<br>participación, <span class="name" id="dash-nombre">María</span></h1>
+    </div>
+
+    <div class="dash-metrics">
+      <div class="metric-card">
+        <div class="metric-icon">👥</div>
+        <span class="metric-val">120</span>
+        <div class="metric-label">personas<br>impactadas</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">🥗</div>
+        <span class="metric-val">80kg</span>
+        <div class="metric-label">alimentos<br>rescatados</div>
+      </div>
+    </div>
+
+    <div class="benefit-card">
+      <div class="b-icon">⭐</div>
+      <div>
+        <div class="b-label">Beneficio ganado</div>
+        <div class="b-val">10 puntos de impacto</div>
+        <div class="b-hint">Acumula para canjear beneficios</div>
+      </div>
+    </div>
+
+    <div class="activity-section">
+      <h3>Tu actividad</h3>
+      <div class="activity-item">
+        <div class="activity-dot"></div>
+        <div class="activity-text">
+          <strong>Jornada completada</strong><br>
+          <span id="act-lugar" style="font-size:13px;color:var(--gray)">Mercado Central</span>
+        </div>
+        <div class="activity-time" id="act-fecha">Hoy</div>
+      </div>
+    </div>
+
+    <div class="dash-cta-area">
+      <div style="height:16px"></div>
+      <button class="btn-primary" onclick="go('agendamiento')">Agendar otra jornada →</button>
+      <div style="height:40px"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // State
+  const state = {
+    nombre: '',
+    jornada: null
+  };
+
+  const jornadas = {
+    1: { fecha: 'Sábado 29 Mar', hora: '8:00 – 12:00 (4 horas)', lugar: 'Mercado Central, Bogotá', impacto: '120 personas', personas: 120 },
+    2: { fecha: 'Domingo 30 Mar', hora: '9:00 – 13:00 (4 horas)', lugar: 'Plaza de Paloquemao, Bogotá', impacto: '95 personas', personas: 95 },
+    3: { fecha: 'Sábado 5 Abr', hora: '7:30 – 11:30 (4 horas)', lugar: 'Corabastos, Bogotá', impacto: '150 personas', personas: 150 },
+  };
+
+  function go(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function registrar() {
+    const nombre = document.getElementById('nombre').value.trim();
+    // Allow continuing even if empty (simulate)
+    state.nombre = nombre || 'Amig@';
+    go('agendamiento');
+  }
+
+  function selectJornada(id) {
+    state.jornada = jornadas[id];
+    // Update all jornada card selection state visually
+    document.querySelectorAll('.jornada-card').forEach(c => c.classList.remove('selected'));
+    document.getElementById('j' + id).classList.add('selected');
+
+    // Update resumen sheet
+    const j = jornadas[id];
+    document.getElementById('resumen-fecha').textContent = j.fecha;
+    document.getElementById('resumen-hora').textContent = j.hora;
+    document.getElementById('resumen-lugar').textContent = j.lugar;
+    document.getElementById('resumen-impacto').textContent = 'Impactar a ' + j.impacto;
+
+    document.getElementById('resumenOverlay').classList.add('show');
+  }
+
+  function cerrarResumen() {
+    document.getElementById('resumenOverlay').classList.remove('show');
+  }
+
+  function confirmar() {
+    cerrarResumen();
+    const j = state.jornada;
+    // Update confirmacion
+    document.getElementById('conf-fecha').textContent = j.fecha;
+    document.getElementById('conf-hora').textContent = j.hora.split(' (')[0];
+    document.getElementById('conf-lugar').textContent = j.lugar;
+    document.getElementById('conf-impacto').textContent = 'Impactarás a ' + j.impacto;
+    go('confirmacion');
+  }
+
+  function irDashboard() {
+    const j = state.jornada;
+    const nombre = state.nombre.split(' ')[0];
+    document.getElementById('dash-nombre').textContent = nombre;
+    document.getElementById('act-lugar').textContent = j.lugar.split(',')[0];
+
+    // Set metric based on jornada
+    const metricCards = document.querySelectorAll('.metric-val');
+    metricCards[0].textContent = j.personas;
+
+    go('dashboard');
+  }
+
+  // Override go for dashboard to populate
+  const _go = go;
+  window.go = function(id) {
+    if (id === 'dashboard') {
+      const j = state.jornada || jornadas[1];
+      const nombre = state.nombre ? state.nombre.split(' ')[0] : 'Amig@';
+      document.getElementById('dash-nombre').textContent = nombre;
+      document.getElementById('act-lugar').textContent = j.lugar.split(',')[0];
+      document.querySelector('#dashboard .metric-card:first-child .metric-val').textContent = j.personas;
+      document.getElementById('act-fecha').textContent = j.fecha.split(' ').slice(1).join(' ');
+    }
+    _go(id);
+  };
+
+  // Close overlay on background tap
+  document.getElementById('resumenOverlay').addEventListener('click', function(e) {
+    if (e.target === this) cerrarResumen();
+  });
+</script>
+</body>
+</html>
